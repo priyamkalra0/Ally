@@ -18,7 +18,10 @@ Options:
   `--version`             Show version information  
   `-?, -h, --help`        Show help and usage information  
 
-
+### Example
+`ally alias ally`  
+followed by `alias -h`  
+This will allow you to use the command `alias` in place of `ally`,  but the execution will be identical.
 
 ## Notes
 ### 1. Forwarding parameters to aliases
