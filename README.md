@@ -18,17 +18,25 @@ Options:
   `--version`             Show version information  
   `-?, -h, --help`        Show help and usage information  
 
-### Example
-`ally alias ally`  
-followed by `alias -h`  
-This will allow you to use the command `alias` in place of `ally`,  but the execution will be identical.
+## Examples
+### `ally say echo`
+Now the command `say` will be equivalent to `echo`.  
+You can test it by running `say yes`.
+This should print yes to the console just like `echo yes` would.
+### `ally alias ally` 
+Now the command `alias` will be equivalent to `ally`.  
+You can test it by running `alias -h`.   
+
 
 ## Notes
-### 1. Forwarding parameters to aliases
+### 1. Powershell is not supported by default
+Right now this only works with command prompt, there is probably a way to make it work with powershell, but I do not use it often enough to do it myself.
+
+### 2. Forwarding parameters to aliases
 By default, all parameters given when calling aliases are forwaded to `<value>`.  
 To disable parameter forwarding for a particular alias, append `%! ` at the end of `<value>` when defining the alias.
 
-### 2. Delayed expansion of enviroment variables
+### 3. Delayed expansion of enviroment variables
 Additionally, you may use a preceding `!` to escape enviroment variables in aliases.
 
 Ex. `ally show-profile "echo !%USERPROFILE!%"`
