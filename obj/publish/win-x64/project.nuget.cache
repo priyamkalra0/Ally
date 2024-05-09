@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "dgSpecHash": "A5n7xrN0dseeAajdutoZQRxFPuTNLuqi6aNSPPXdP8DJqbcpEJErn/N0FrjNZ5CKR4E0z59zjvT9TfSX9zlX6A==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\priyamkalra\\Documents\\Network\\ldn\\C#\\Source\\Ally\\Ally.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\priyamkalra\\.nuget\\packages\\system.commandline\\2.0.0-beta4.22272.1\\system.commandline.2.0.0-beta4.22272.1.nupkg.sha512",
+    "C:\\Users\\priyamkalra\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\6.0.21\\microsoft.netcore.app.runtime.win-x64.6.0.21.nupkg.sha512",
+    "C:\\Users\\priyamkalra\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\6.0.21\\microsoft.windowsdesktop.app.runtime.win-x64.6.0.21.nupkg.sha512",
+    "C:\\Users\\priyamkalra\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\6.0.21\\microsoft.aspnetcore.app.runtime.win-x64.6.0.21.nupkg.sha512",
+    "C:\\Users\\priyamkalra\\.nuget\\packages\\microsoft.netcore.app.crossgen2.win-x64\\6.0.21\\microsoft.netcore.app.crossgen2.win-x64.6.0.21.nupkg.sha512"
+  ],
+  "logs": []
+}

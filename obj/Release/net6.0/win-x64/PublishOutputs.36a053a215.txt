@@ -1,0 +1,2 @@
+D:\Library\Code\C#\Toolkit\Ally\Ally.pdb
+D:\Library\Code\C#\Toolkit\Ally\Ally.exe

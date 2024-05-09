@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "uwgeh2dUpYs4Eietku2Sp4Wo1Zw6za9XwKYKTW5CSCAhxgJ1idSxvQlvjBnOWs1k2JQgJBp8ZufROYE/+Mo/ag==",
+  "success": true,
+  "projectFilePath": "/storage/Library/Code/Source/Gits/0/Ally/Ally.csproj",
+  "expectedPackageFiles": [
+    "/home/priyamkalra/.nuget/packages/system.commandline/2.0.0-beta4.22272.1/system.commandline.2.0.0-beta4.22272.1.nupkg.sha512",
+    "/home/priyamkalra/.nuget/packages/microsoft.aspnetcore.app.ref/6.0.29/microsoft.aspnetcore.app.ref.6.0.29.nupkg.sha512"
+  ],
+  "logs": []
+}

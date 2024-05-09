@@ -1,0 +1,72 @@
+{
+  "format": 1,
+  "restore": {
+    "/storage/Library/Code/Source/Gits/0/Ally/Ally.csproj": {}
+  },
+  "projects": {
+    "/storage/Library/Code/Source/Gits/0/Ally/Ally.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/storage/Library/Code/Source/Gits/0/Ally/Ally.csproj",
+        "projectName": "Ally",
+        "projectPath": "/storage/Library/Code/Source/Gits/0/Ally/Ally.csproj",
+        "packagesPath": "/home/priyamkalra/.nuget/packages/",
+        "outputPath": "/storage/Library/Code/Source/Gits/0/Ally/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/priyamkalra/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "System.CommandLine": {
+              "target": "Package",
+              "version": "[2.0.0-beta4.22272.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[6.0.29, 6.0.29]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.129/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
