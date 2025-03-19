@@ -9,8 +9,8 @@
 ### `ally [<name> [<value>]] [options]`  
 
 Without arguments, `ally` prints a list of aliases in the reusable form `ally <name> <value>` on standard output.  
-Otherwise, if `<value>` is given, an alias is defined for `<name>` and `<value>`,
-and if `<value>` is not given, any existing alias corresponding to `<name> ` is removed.
+Otherwise, if both `<name>` & `<value>` are passed, an alias `<name>` is defined for some `<value>`,
+and if only `<name>` is passed, any existing alias corresponding to `<name>` is removed.
 
 Options:  
   `-s, --search <query>`  Display all aliases that contain `<query>`  
@@ -29,12 +29,12 @@ You can test it by running `alias -h`.
 
 
 ## Notes
-### 1. Powershell is not supported by default
-Right now this only works with command prompt, there is probably a way to make it work with powershell, but I do not use it often enough to do it myself.
+### 1. Not tested on powershell
+I have not extensively tested ally on powershell. On my current machine, it does seem to work fine, but it may vary with different configurations. tldr; ally is not meant to be used with powershell and it may or may not work.
 
 ### 2. Forwarding parameters to aliases
 By default, all parameters given when calling aliases are forwaded to `<value>`.  
-To disable parameter forwarding for a particular alias, append `%! ` at the end of `<value>` when defining the alias.
+To disable parameter forwarding for a particular alias, append `%!` at the end of `<value>` when defining the alias.
 
 ### 3. Delayed expansion of enviroment variables
 Additionally, you may use a preceding `!` to escape enviroment variables in aliases.
