@@ -16,7 +16,10 @@ namespace Ally
 
     public static class Ally
     {
-        private static readonly string DataDirectory = Environment.GetEnvironmentVariable("APPDATA") + @"\Ally";
+        private static readonly string DataDirectory = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            "Ally"
+        );
 
         static Ally()
         {
@@ -78,7 +81,7 @@ namespace Ally
         // Essentially reverses the dumping process, converting an alias (.cmd) file into an `Alias`.
         private static Alias LoadAliasFromFile(string path)
         {
-            string name = new FileInfo(path).Name[..^4];
+            string name = Path.GetFileNameWithoutExtension(path);
             string value = 
                 File.ReadAllLines(path)[^1] // Discard header
                 .Replace("\"", "\\\"") // Escape quotes
@@ -94,7 +97,7 @@ namespace Ally
         }
 
         // Simply returns the assumed path of an alias (.cmd) file.
-        private static string GetAliasFilePath(string name) => (DataDirectory + @$"\{name}.cmd");
+        private static string GetAliasFilePath(string name) => Path.Combine(DataDirectory, $"{name}.cmd");
 
         // FS Wrappers for alias (.cmd) files.
         private static void DeleteAliasFile(string path) => File.Delete(path);
