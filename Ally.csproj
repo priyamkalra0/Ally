@@ -14,6 +14,7 @@
     <UseSystemResourceKeys>true</UseSystemResourceKeys>
     <EventSourceSupport>false</EventSourceSupport>
     <MetricsSupport>false</MetricsSupport>
+    <IlcDisableReflection>true</IlcDisableReflection>
   </PropertyGroup>
 
   <ItemGroup>
