@@ -23,7 +23,7 @@ namespace Ally
         public static void RegisterAlias(Alias alias) =>
             CreateAliasFile(
                 GetAliasFilePath(alias.Name),
-                DumpAliasIntoFileBuilder(alias.Value)
+                AliasToCommandList(alias.Value)
             );
 
         // Deletes an alias given it's name.
@@ -38,7 +38,7 @@ namespace Ally
         }
 
         // Yields `Alias` instances which contain given query in their names.
-        public static IEnumerable<Alias> GetAliases(string query) => 
+        public static IEnumerable<Alias> GetAliases(string query) =>
             IterAliases(name => name.Contains(query));
 
         // Yields required `Alias` instances, filtering as needed.
@@ -52,8 +52,7 @@ namespace Ally
         // Returns an `Alias` instance from it's name.
         public static Alias GetAlias(string name) => LoadAliasFromFile(GetAliasFilePath(name));
 
-        // Prepares the contents required to build an alias (.cmd) file for a given `Alias` instance.
-        private static string[] DumpAliasIntoFileBuilder(string value)
+        private static string[] AliasToCommandList(string value)
         {
             bool explicitDisableParamFwd = value.EndsWith(" %!");
             if (explicitDisableParamFwd) value = value[..^3];
@@ -63,18 +62,18 @@ namespace Ally
 
             string parameterFwdSuffix = (explicitDisableParamFwd || implicitDisableParamFwd) ? "" : " %*";
 
-            return new[] {
+            return [
                 "@echo off",
                 value.Replace("!%", "%") // "Unescape" enviroment variables
                 + parameterFwdSuffix
-            };
+            ];
         }
 
         // Essentially reverses the dumping process, converting an alias (.cmd) file into an `Alias`.
         private static Alias LoadAliasFromFile(string path)
         {
             string name = Path.GetFileNameWithoutExtension(path);
-            string value = 
+            string value =
                 File.ReadAllLines(path)[^1] // Discard header
                 .Replace("\"", "\\\"") // Escape quotes
                 .Replace("%", "!%"); // "Escape" enviroment variables
@@ -93,7 +92,7 @@ namespace Ally
 
         // FS Wrappers for alias (.cmd) files.
         private static void DeleteAliasFile(string path) => File.Delete(path);
-        private static void CreateAliasFile(string path, string[] builder) => File.WriteAllLines(path, builder);
+        private static void CreateAliasFile(string path, string[] command_list) => File.WriteAllLines(path, command_list);
 
         // Yields names of required alias (.cmd) files, filtering as needed.
         private static IEnumerable<string> IterAliasFiles(Func<string, bool>? filter = null)
