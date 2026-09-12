@@ -4,7 +4,7 @@ namespace Ally
 {
     public readonly record struct Alias(string Name, string Value);
 
-    public static class Ally
+    public static partial class Ally
     {
         private static readonly string DataDirectory = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
@@ -57,7 +57,7 @@ namespace Ally
             if (explicitDisableParamFwd) value = value[..^3];
 
             // Using parameters manually implies no forwarding.
-            bool implicitDisableParamFwd = ImplicitDisableParamFwdPattern.IsMatch(value);
+            bool implicitDisableParamFwd = RegexpImplicitDisableParamFwd.IsMatch(value);
 
             string parameterFwdSuffix = (explicitDisableParamFwd || implicitDisableParamFwd) ? "" : " %*";
 
@@ -106,6 +106,7 @@ namespace Ally
             return files.Where(path => filter(GetAliasNameFromFilePath(path)));
         }
 
-        private static readonly Regex ImplicitDisableParamFwdPattern = new(@"%[*,0-9]", RegexOptions.Compiled);
+        [GeneratedRegex(@"%[*,0-9]")]
+        private static partial Regex RegexpImplicitDisableParamFwd { get; }
     }
 }
