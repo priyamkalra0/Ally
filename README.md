@@ -50,5 +50,12 @@ Now, running `greet` will execute both `echo Hello` and `echo World` in sequence
 ### 4. Support for powershell
 Ally does seem to work fine on powershell, but it may vary with different configurations. tldr; ally was designed to be used in command prompt (`cmd.exe`) and it may or may not work with powershell.
 
+## Build
+Requires the .NET 10 SDK. Run the provided script:
+```cmd
+scripts\build
+```
+Produces a Native AOT binary for `win-x64` under `bin/Release/net10.0/win-x64/native/`.
+
 ## Working
 Under the hood, Ally simply manages `.cmd` files for each alias you define in its `%APPDATA%/Ally` data directory, which can then be directly invoked from command prompt.
