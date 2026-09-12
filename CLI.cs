@@ -6,14 +6,14 @@ namespace Ally
     {
         private const string Description = 
             "Simple tool for managing unix-like aliases on windows." +
-            "\n  Without arguments, `ally` prints the list of aliases in the reusable form `ally <name> <value>` on standard output." +
-            "\n  Otherwise, if <value> is given, an alias is defined for <name> and <value>," +
-            "\n  and if <value> is not given, any existing alias corresponding to <name> is removed." +
-            "\n  By default, all parameters given when calling alias are forwarded to <value>." +
-            "\n  To disable parameters forwarding, append %! at the end of <value> when defining the alias." +
+            "\n  Without arguments, `ally` prints a list of aliases in the reusable form `ally <name> <value>` on standard output." +
+            "\n  Otherwise, if both `<name>` & `<value>` are passed, an alias is defined binding `<name>` to `<value>`" +
+            "\n  and if only `<name>` is passed, any existing alias corresponding to `<name>` is removed." +
+            "\n  By default, all parameters given when calling an alias are forwarded to <value>." +
+            "\n  To disable parameter forwarding, append %! at the end of <value> when defining the alias." +
             "\n  Additionally, you may use a preceding ! to escape environment variables in aliases." +
             "\n  Ex. ally show-profile \"echo !%USERPROFILE!%\"" +
-            "\n  Now, the environment variable will be evaluated when the alias is called."
+            "\n  Now, the environment variable will be evaluated every time when the alias is called, not when it is defined."
             ;
 
         private static int Main(string[] args)
