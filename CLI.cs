@@ -16,41 +16,42 @@ namespace Ally
             "\n  Now, the environment variable will be evaluated when the alias is called."
             ;
 
-        private static async Task<int> Main(string[] args)
+        private static int Main(string[] args)
         {
-            Argument<string?> argName = new(
-                name: "name",
-                description: "The alias name.",
-                getDefaultValue: () => null
-            );
-            Argument<string?> argValue = new(
-                name: "value",
-                description: "The value bound to the alias.",
-                getDefaultValue: () => null
-            );
-
-            Option<string> optSearch = new(
-                name: "--search",
-                description: "Display all aliases that contain <query> in the reusable form `ally <name> <value>`"
-             ) { ArgumentHelpName = "query" };
-            optSearch.AddAlias("-s");
-
-            Option<bool> flagClear = new(
-                name: "--clear",
-                description: "Clear all currently set aliases."
-            );
-            flagClear.AddAlias("-c");
-
-            RootCommand root = new(Description) {
-                argName,
-                argValue,
-                optSearch,
-                flagClear
+            Argument<string?> argName = new("name") {
+                Description = "The alias name.",
+                DefaultValueFactory = _ => null
+            };
+            Argument<string?> argValue = new("value") {
+                Description = "The value bound to the alias.",
+                DefaultValueFactory = _ => null
             };
 
-            root.SetHandler(Handler, argName, argValue, optSearch, flagClear);
+            Option<string> optSearch = new("--search", "-s") {
+                Description = "Display all aliases that contain <query> in the reusable form `ally <name> <value>`",
+                HelpName = "query"
+            };
 
-            return await root.InvokeAsync(args);
+            Option<bool> flagClear = new("--clear", "-c") {
+                Description = "Clear all currently set aliases."
+            };
+
+            RootCommand root = new(Description);
+            root.Arguments.Add(argName);
+            root.Arguments.Add(argValue);
+            root.Options.Add(optSearch);
+            root.Options.Add(flagClear);
+
+            root.SetAction(parseResult =>
+            {
+                string? name = parseResult.GetValue(argName);
+                string? value = parseResult.GetValue(argValue);
+                string? query = parseResult.GetValue(optSearch);
+                bool clear = parseResult.GetValue(flagClear);
+                Handler(name, value, query, clear);
+            });
+
+            return root.Parse(args).Invoke();
         }
 
         private static void Handler(string? name, string? value, string? query, bool clear)
@@ -62,7 +63,8 @@ namespace Ally
             else Ally.RegisterAlias(new(name, value)); // Register
         }
 
-        private static void DisplayAliases(IEnumerable<Alias> aliases) {
+        private static void DisplayAliases(IEnumerable<Alias> aliases)
+        {
             foreach (Alias alias in aliases) Console.WriteLine($"ally {alias.Name} {alias.Value}");
         }
     }
