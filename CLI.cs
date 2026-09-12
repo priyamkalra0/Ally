@@ -9,23 +9,23 @@ namespace Ally
             "\n  Without arguments, `ally` prints the list of aliases in the reusable form `ally <name> <value>` on standard output." +
             "\n  Otherwise, if <value> is given, an alias is defined for <name> and <value>," +
             "\n  and if <value> is not given, any existing alias corresponding to <name> is removed." +
-            "\n  By default, all parameters given when calling alias are forwaded to <value>." +
+            "\n  By default, all parameters given when calling alias are forwarded to <value>." +
             "\n  To disable parameters forwarding, append %! at the end of <value> when defining the alias." +
-            "\n  Additionally, you may use a preceding ! to escape enviroment variables in aliases." +
+            "\n  Additionally, you may use a preceding ! to escape environment variables in aliases." +
             "\n  Ex. ally show-profile \"echo !%USERPROFILE!%\"" +
-            "\n  Now, the enviroment variable will be evaluated when the alias is called."
+            "\n  Now, the environment variable will be evaluated when the alias is called."
             ;
 
         private static async Task<int> Main(string[] args)
         {
             Argument<string?> argName = new(
                 name: "name",
-                description: "The alias to be defined for given value.",
+                description: "The alias name.",
                 getDefaultValue: () => null
             );
             Argument<string?> argValue = new(
                 name: "value",
-                description: "Required value to be binded to given alias.",
+                description: "The value bound to the alias.",
                 getDefaultValue: () => null
             );
 
@@ -41,21 +41,21 @@ namespace Ally
             );
             flagClear.AddAlias("-c");
 
-            RootCommand console = new(Description) {
-                argName, 
+            RootCommand root = new(Description) {
+                argName,
                 argValue,
                 optSearch,
                 flagClear
             };
 
-            console.SetHandler(Handler, argName, argValue, optSearch, flagClear);
-            
-            return await console.InvokeAsync(args);
+            root.SetHandler(Handler, argName, argValue, optSearch, flagClear);
+
+            return await root.InvokeAsync(args);
         }
 
         private static void Handler(string? name, string? value, string? query, bool clear)
         {
-            if (clear == true) Ally.ClearAliases(); // Clear
+            if (clear) Ally.ClearAliases(); // Clear
             else if (query != null) DisplayAliases(Ally.GetAliases(query)); // Search
             else if (name == null) DisplayAliases(Ally.IterAliases()); // Display
             else if (value == null) Ally.DeleteAlias(name); // Delete
