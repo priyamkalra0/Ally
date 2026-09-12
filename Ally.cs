@@ -6,6 +6,8 @@ namespace Ally
 
     public static class Ally
     {
+        private static readonly Regex DisableParamFwdPattern = new(@"%[*,0-9]", RegexOptions.Compiled);
+
         private static readonly string DataDirectory = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             "Ally"
@@ -57,7 +59,7 @@ namespace Ally
             if (explicitDisableParamFwd) value = value[..^3];
 
             // Using parameters manually implies no forwarding.
-            bool implicitDisableParamFwd = new Regex(@"\%[*,0-9]").IsMatch(value);
+            bool implicitDisableParamFwd = DisableParamFwdPattern.IsMatch(value);
 
             string parameterFwdSuffix = (explicitDisableParamFwd || implicitDisableParamFwd) ? "" : " %*";
 
