@@ -6,8 +6,6 @@ namespace Ally
 
     public static class Ally
     {
-        private static readonly Regex DisableParamFwdPattern = new(@"%[*,0-9]", RegexOptions.Compiled);
-
         private static readonly string DataDirectory = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             "Ally"
@@ -23,10 +21,10 @@ namespace Ally
         public static void RegisterAlias(Alias alias) =>
             CreateAliasFile(
                 GetAliasFilePathFromName(alias.Name),
-                AliasToCommandList(alias.Value)
+                AliasValueToCommandList(alias.Value)
             );
 
-        // Deletes an alias given it's name.
+        // Deletes an alias given its name.
         public static void DeleteAlias(string name) =>
             DeleteAliasFile(GetAliasFilePathFromName(name));
 
@@ -49,34 +47,35 @@ namespace Ally
                 select LoadAliasFromFile(file);
         }
 
-        // Returns an `Alias` instance from it's name.
+        // Returns an `Alias` instance from its name.
         public static Alias GetAlias(string name) => LoadAliasFromFile(GetAliasFilePathFromName(name));
 
-        private static string[] AliasToCommandList(string value)
+        // Converts an `Alias` value into a Command List, which can be written to an alias (.cmd) file.
+        private static string[] AliasValueToCommandList(string value)
         {
             bool explicitDisableParamFwd = value.EndsWith(" %!");
             if (explicitDisableParamFwd) value = value[..^3];
 
             // Using parameters manually implies no forwarding.
-            bool implicitDisableParamFwd = DisableParamFwdPattern.IsMatch(value);
+            bool implicitDisableParamFwd = ImplicitDisableParamFwdPattern.IsMatch(value);
 
             string parameterFwdSuffix = (explicitDisableParamFwd || implicitDisableParamFwd) ? "" : " %*";
 
             return [
                 "@echo off",
-                value.Replace("!%", "%") // "Unescape" enviroment variables
+                value.Replace("!%", "%") // "Unescape" environment variables
                 + parameterFwdSuffix
             ];
         }
 
-        // Essentially reverses the dumping process, converting an alias (.cmd) file into an `Alias`.
+        // Loads an alias (.cmd) file into an `Alias` instance.
         private static Alias LoadAliasFromFile(string path)
         {
             string name = Path.GetFileNameWithoutExtension(path);
             string value =
                 File.ReadAllLines(path)[^1] // Discard header
                 .Replace("\"", "\\\"") // Escape quotes
-                .Replace("%", "!%"); // "Escape" enviroment variables
+                .Replace("%", "!%"); // "Escape" environment variables
 
 
             bool explicitEnableParamFwd = value.EndsWith(" !%*");
@@ -91,7 +90,7 @@ namespace Ally
         private static string GetAliasFilePathFromName(string name) => Path.Combine(DataDirectory, $"{name}.cmd");
         private static string GetAliasNameFromFilePath(string path) => Path.GetFileNameWithoutExtension(path);
 
-        // FS Wrappers for alias (.cmd) files.
+        // Filesystem methods for alias (.cmd) files.
         private static void DeleteAliasFile(string path) => File.Delete(path);
         private static void CreateAliasFile(string path, string[] command_list) => File.WriteAllLines(path, command_list);
 
@@ -101,10 +100,12 @@ namespace Ally
             IEnumerable<string> files =
                 Directory
                 .EnumerateFiles(DataDirectory)
-                .Where(name => name.EndsWith(".cmd"));
+                .Where(path => path.EndsWith(".cmd"));
 
-             if (filter == null) return files;
+            if (filter == null) return files;
             return files.Where(path => filter(GetAliasNameFromFilePath(path)));
         }
+
+        private static readonly Regex ImplicitDisableParamFwdPattern = new(@"%[*,0-9]", RegexOptions.Compiled);
     }
 }
