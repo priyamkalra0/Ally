@@ -22,13 +22,13 @@ namespace Ally
         // Register a given `Alias` instance.
         public static void RegisterAlias(Alias alias) =>
             CreateAliasFile(
-                GetAliasFilePath(alias.Name),
+                GetAliasFilePathFromName(alias.Name),
                 AliasToCommandList(alias.Value)
             );
 
         // Deletes an alias given it's name.
         public static void DeleteAlias(string name) =>
-            DeleteAliasFile(GetAliasFilePath(name));
+            DeleteAliasFile(GetAliasFilePathFromName(name));
 
         // Clears all registered aliases.
         public static void ClearAliases()
@@ -50,7 +50,7 @@ namespace Ally
         }
 
         // Returns an `Alias` instance from it's name.
-        public static Alias GetAlias(string name) => LoadAliasFromFile(GetAliasFilePath(name));
+        public static Alias GetAlias(string name) => LoadAliasFromFile(GetAliasFilePathFromName(name));
 
         private static string[] AliasToCommandList(string value)
         {
@@ -87,8 +87,9 @@ namespace Ally
             return new(name, $"\"{value}\"");
         }
 
-        // Simply returns the assumed path of an alias (.cmd) file.
-        private static string GetAliasFilePath(string name) => Path.Combine(DataDirectory, $"{name}.cmd");
+        // Alias name / file path getters.
+        private static string GetAliasFilePathFromName(string name) => Path.Combine(DataDirectory, $"{name}.cmd");
+        private static string GetAliasNameFromFilePath(string path) => Path.GetFileNameWithoutExtension(path);
 
         // FS Wrappers for alias (.cmd) files.
         private static void DeleteAliasFile(string path) => File.Delete(path);
@@ -103,7 +104,7 @@ namespace Ally
                 .Where(name => name.EndsWith(".cmd"));
 
              if (filter == null) return files;
-            return files.Where(filter);
+            return files.Where(path => filter(GetAliasNameFromFilePath(path)));
         }
     }
 }
