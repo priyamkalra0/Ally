@@ -19,11 +19,11 @@ namespace Ally
         private static int Main(string[] args)
         {
             Argument<string?> argName = new("name") {
-                Description = "The alias name.",
+                Description = "The alias name",
                 DefaultValueFactory = _ => null
             };
             Argument<string?> argValue = new("value") {
-                Description = "The value bound to the alias.",
+                Description = "The value bound to the alias",
                 DefaultValueFactory = _ => null
             };
 
@@ -33,7 +33,11 @@ namespace Ally
             };
 
             Option<bool> flagClear = new("--clear", "-c") {
-                Description = "Clear all currently set aliases."
+                Description = "Clear all currently set aliases"
+            };
+
+            Option<bool> flagVersion = new("--version", "-v") { 
+                Description = "Show version information" 
             };
 
             RootCommand root = new(Description);
@@ -41,22 +45,31 @@ namespace Ally
             root.Arguments.Add(argValue);
             root.Options.Add(optSearch);
             root.Options.Add(flagClear);
+            root.Options.Add(flagVersion);
+
+            // remove builtin --version flag
+            var builtinVersion = root.Options.First(o => o is VersionOption);
+            root.Options.Remove(builtinVersion);
+
 
             root.SetAction(parseResult =>
             {
-                string? name = parseResult.GetValue(argName);
-                string? value = parseResult.GetValue(argValue);
-                string? query = parseResult.GetValue(optSearch);
-                bool clear = parseResult.GetValue(flagClear);
-                Handler(name, value, query, clear);
+                Handler(
+                    name: parseResult.GetValue(argName), 
+                    value: parseResult.GetValue(argValue), 
+                    query: parseResult.GetValue(optSearch), 
+                    clear: parseResult.GetValue(flagClear), 
+                    version: parseResult.GetValue(flagVersion)
+                );
             });
 
             return root.Parse(args).Invoke();
         }
 
-        private static void Handler(string? name, string? value, string? query, bool clear)
+        private static void Handler(string? name, string? value, string? query, bool clear, bool version)
         {
-            if (clear) Ally.ClearAliases(); // Clear
+            if (version) Console.WriteLine("v{0} @ {1}", Version.Number, Version.Link); // Version
+            else if (clear) Ally.ClearAliases(); // Clear
             else if (query != null) DisplayAliases(Ally.GetAliases(query)); // Search
             else if (name == null) DisplayAliases(Ally.IterAliases()); // Display
             else if (value == null) Ally.DeleteAlias(name); // Delete
