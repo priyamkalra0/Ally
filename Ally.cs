@@ -2,17 +2,7 @@
 
 namespace Ally
 {
-    public readonly struct Alias
-    {
-        public readonly string Name { get; }
-        public readonly string Value { get; }
-
-        public Alias(string name, string value)
-        {
-            Name = name;
-            Value = value;
-        }
-    }
+    public readonly record struct Alias(string Name, string Value);
 
     public static class Ally
     {
