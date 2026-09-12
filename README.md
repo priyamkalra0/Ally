@@ -27,7 +27,7 @@ This should print `yes` to the console just like `echo yes` would.
 Now the command `alias` will redirect to `ally`.  
 You can test it by running `alias -h`.   
 
-## Notes
+## Features
 ### 1. Forwarding parameters in aliases
 By default, all parameters given when calling aliases are forwarded to `<value>`.  
 To disable parameter forwarding for a particular alias, append `%!` at the end of `<value>` when defining the alias.
@@ -39,7 +39,15 @@ ally show-profile "echo !%USERPROFILE!%"
 ```
 Now, the environment variable `USERPROFILE` will be evaluated every time when the alias is called, not when it is defined.
 
-### 3. Support for powershell
+### 3. Indepedent command chaining using special `!&!` operator
+You may use `!&!` to chain multiple commands with independent parsing in a single alias, and if you don't care about independent parsing- you can just use the normal `&` operator.
+Example:
+```
+ally greet "echo Hello !&! echo World"
+```
+Now, running `greet` will execute both `echo Hello` and `echo World` in sequence, but parse them independently of each other.
+
+### 4. Support for powershell
 Ally does seem to work fine on powershell, but it may vary with different configurations. tldr; ally was designed to be used in command prompt (`cmd.exe`) and it may or may not work with powershell.
 
 ## Working

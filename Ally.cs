@@ -64,6 +64,7 @@ namespace Ally
             return [
                 "@echo off",
                 value.Replace("!%", "%") // "Unescape" environment variables
+                .Replace(" !&! ", "\n").Replace("!&!", "\n") // v1.1: multiple command support
                 + parameterFwdSuffix
             ];
         }
@@ -72,10 +73,17 @@ namespace Ally
         private static Alias LoadAliasFromFile(string path)
         {
             string name = Path.GetFileNameWithoutExtension(path);
+
+            var command_list = 
+                File.ReadAllLines(path).AsSpan()
+                [1..] // Discard header
+                ;
+
             string value =
-                File.ReadAllLines(path)[^1] // Discard header
+                string.Join(" !&! ", command_list) // v1.1: multiple command support
                 .Replace("\"", "\\\"") // Escape quotes
-                .Replace("%", "!%"); // "Escape" environment variables
+                .Replace("%", "!%") // "Escape" environment variables
+                ;
 
 
             bool explicitEnableParamFwd = value.EndsWith(" !%*");
